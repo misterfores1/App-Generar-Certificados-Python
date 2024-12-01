@@ -1,7 +1,6 @@
 import sqlite3
 
 from flask import Flask, render_template, request, send_file, redirect, url_for, session, flash
-from PyPDF2 import PdfReader, PdfWriter
 from fpdf import FPDF
 from datetime import datetime
 from PIL import Image
