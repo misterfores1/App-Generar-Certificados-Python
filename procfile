@@ -1,1 +1,1 @@
-web: gunicorn AppCertificados.wsgi:app
+web: python app.py
