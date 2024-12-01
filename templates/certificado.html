@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generar Certificado</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script>
+        function validarFormulario(event) {
+            const documento = document.getElementById("documento").value;
+            if (!/^\d+$/.test(documento)) {
+                alert("El número de cédula debe contener solo números.");
+                event.preventDefault();
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Generar tu Certificado</h1>
+    <form action="/generar" method="post" onsubmit="validarFormulario(event)">
+        <label for="documento">Número de Cédula:</label>
+        <input type="text" id="documento" name="documento" placeholder="Ingresa tu número de cédula" required>
+        <br>
+        <button type="submit">Generar Certificado</button>
+    </form>
+</body>
+</html>

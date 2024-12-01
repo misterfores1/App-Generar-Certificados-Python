@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Usuario</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Registrar Usuario</h1>
+    {% if mensaje %}
+        <p style="color: green;">{{ mensaje }}</p>
+    {% endif %}
+    <form action="/registrar" method="post">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" placeholder="Ingresa el nombre completo" required>
+        <br>
+        <label for="documento">Número de Cédula:</label>
+        <input type="text" id="documento" name="documento" placeholder="Ingresa el número de cédula" required>
+        <br>
+        <label for="curso">Curso Aprobado:</label>
+        <input type="text" id="curso" name="curso" placeholder="Ingresa el curso aprobado" required>
+        <br>
+        <button type="submit">Registrar</button>
+    </form>
+    <a href="/">Volver a la página principal</a>
+</body>
+</html>
