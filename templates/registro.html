@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrar Usuario</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='registrostyle.css') }}">
+
 </head>
 <body>
     <h1>Registrar Usuario</h1>
@@ -19,12 +20,20 @@
         <input type="text" id="documento" name="documento" placeholder="Ingresa el número de cédula" required>
         <br>
         <label for="curso">Curso Aprobado:</label>
-        <input type="text" id="curso" name="curso" placeholder="Ingresa el curso aprobado" required>
+        <select name="curso" id="curso" required>
+         <option value="" disabled selected>Seleccione un curso de la lista</option>
+            {% for curso in cursos %}
+        <option value="{{ curso }}">{{ curso }}</option>
+            {% endfor %}
+        </select>
+
         <br>
         <button type="submit">Registrar</button>
-        <a href="/">Volver a la página principal</a>
-    <a href="{{ url_for('ver_registros') }}" class="btn btn-primary">Ver Todos los Registros</a>
+        
     </form>
+
+    <a href="/">Volver a la página principal</a>
+    <a href="{{ url_for('ver_registros') }}" class="btn btn-primary">Ver Todos los Registros</a>
     
 
 </body>

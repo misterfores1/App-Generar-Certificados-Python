@@ -1,0 +1,131 @@
+/* Estilo general del cuerpo */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+/* Encabezado principal */
+h1 {
+    font-size: 2rem;
+    margin-top: 20px;
+    color: #ffffff;
+}
+
+/* Contenedor del formulario */
+form {
+    display: block;
+    background-color: #1e1e1e;
+    padding: 20px;
+    margin: 40px auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    max-width: 400px;
+    text-align: left;
+}
+
+/* Etiquetas de los campos */
+form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+/* Campos de entrada */
+form input, form select {
+    width: calc(100% - 20px);
+    margin-bottom: 15px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #333;
+    border-radius: 4px;
+    background-color: #272727;
+    color: #ffffff;
+}
+
+/* Campos de entrada en foco */
+form input:focus, form select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px #007bff;
+}
+
+/* Estilo para las opciones del select */
+form option {
+    background-color: #007bff;
+    color: #ffffff;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* Botón de envío */
+form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Efecto al pasar el cursor por el botón */
+form button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+/* Enlace para regresar */
+a.ver-registros {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s;
+}
+
+/* Efecto al pasar el cursor por el enlace */
+a.ver-registros:hover {
+    color: #0056b3;
+}
+
+/* Estilos para el mensaje de éxito o error */
+p.mensaje {
+    font-size: 1.2rem;
+    color: #28a745;  /* Verde para el éxito */
+    margin-top: 20px;
+}
+
+p.mensaje.error {
+    color: #dc3545;  /* Rojo para los errores */
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 600px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    form {
+        padding: 15px;
+        width: 90%;
+    }
+
+    form button {
+        font-size: 14px;
+    }
+
+    a.ver-registros {
+        font-size: 12px;
+    }
+}

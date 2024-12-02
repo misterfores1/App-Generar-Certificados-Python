@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, send_file, redirect, url_for, session, flash
+
 from fpdf import FPDF
-from datetime import datetime
+from datetime import datetime, timedelta  # Importar timedelta
 from PIL import Image
 import sqlite3
 import csv
@@ -13,6 +14,9 @@ app = Flask(__name__)
 
 # Configuración de la clave secreta para sesiones
 app.secret_key = "mi_clave_secreta"
+
+# Configuración del tiempo de vida de la sesión (ejemplo: 30 minutos)
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
 
 # Función para conectar con la base de datos
 def conectar_bd():
@@ -112,6 +116,8 @@ def login():
 # Ruta para registrar usuarios (protegida con contraseña)
 @app.route("/registrar", methods=["GET", "POST"])
 def registrar_usuario():
+    cursos = ["Curso de Caligrafía", "Curso de Moda", "Confección", "Marketing Digital", "Diseño Gráfico"]
+
     # Verificar si la sesión está autenticada
     if not session.get("authenticated"):
         return redirect(url_for("login"))  # Redirigir al login si no está autenticado
@@ -125,25 +131,36 @@ def registrar_usuario():
         if not nombre or not documento.isdigit() or not curso:
             return "Todos los campos son obligatorios y el documento debe ser numérico."
 
-        # Conectar a la base de datos e insertar datos
+        # Conectar a la base de datos y verificar si el documento ya existe
         connection = conectar_bd()
         cursor = connection.cursor()
 
+        cursor.execute("SELECT * FROM aprobados WHERE documento = ?", (documento,))
+        existing_record = cursor.fetchone()
+
+        if existing_record:
+            connection.close()
+            mensaje = "El documento ya está registrado."
+            return render_template("registro.html", mensaje=mensaje, cursos=cursos)
+
+        # Si el documento no existe, proceder con la inserción
         try:
             cursor.execute(
-                "INSERT INTO aprobados (nombre, documento, curso) VALUES (?, ?, ?)",
+                "INSERT INTO aprobados (nombre, documento, curso) VALUES (?, ?, ?)",  # Corregido aquí
                 (nombre, documento, curso),
             )
             connection.commit()
             mensaje = "Usuario registrado con éxito."
         except sqlite3.IntegrityError:
-            mensaje = "El documento ya está registrado."
+            mensaje = "Hubo un error al registrar el usuario."
         finally:
             connection.close()
 
-        return render_template("registro.html", mensaje=mensaje)
+        return render_template("registro.html", mensaje=mensaje, cursos=cursos)
 
-    return render_template("registro.html")
+    return render_template("registro.html", cursos=cursos)
+
+
 
 
 
@@ -153,6 +170,10 @@ if not os.path.exists('uploads'):
 # Ruta para la carga masiva
 @app.route('/carga_masiva', methods=['GET', 'POST'])
 def carga_masiva():
+    # Verificar si la sesión está autenticada
+    if not session.get("authenticated"):
+        return redirect(url_for("login"))  # Redirigir al login si no está autenticado
+    
     if request.method == 'POST':
         print(request.files)  # Ver los archivos enviados por el formulario
         
@@ -170,10 +191,10 @@ def carga_masiva():
                     next(reader)  # Si el archivo tiene encabezados, los salta
                     for row in reader:
                         # Verificar que la fila tenga la cantidad correcta de datos
-                        if len(row) == 4:  # Por ejemplo, supongamos que hay 4 columnas
-                            documento, nombre, curso, fecha = row
+                        if len(row) == 3:  # Cambiar según el número de columnas en tu tabla
+                            nombre, documento, curso = row
                             # Inserción de los datos en la base de datos
-                            agregar_a_base_datos(documento, nombre, curso, fecha)
+                            agregar_a_base_datos(nombre, documento, curso)
                         else:
                             print("Fila no válida:", row)  # Si la fila no tiene la cantidad correcta de columnas
             except Exception as e:
@@ -188,6 +209,7 @@ def carga_masiva():
             return 'El archivo no es CSV', 400
     
     return render_template('carga_masiva.html')
+
 
 @app.route('/success')
 def success():
@@ -212,6 +234,7 @@ def agregar_a_base_datos(documento, nombre, curso, fecha):
 
 
 
+# ruta para ver registros
 
 @app.route("/ver_registros")
 def ver_registros():
@@ -224,6 +247,49 @@ def ver_registros():
 
     # Renderizar la plantilla con los registros
     return render_template("ver_registros.html", registros=registros)
+
+
+
+# Ruta para actualizar registros
+@app.route("/actualizar", methods=["POST"])
+def actualizar_registro():
+    data = request.get_json()
+    id = data["id"]
+    column = data["column"]
+    value = data["value"]
+
+    # Validar que la columna sea válida
+    if column not in ["nombre", "documento", "curso"]:
+        return "Columna no válida", 400
+
+    # Conectar a la base de datos y actualizar el registro
+    connection = conectar_bd()
+    cursor = connection.cursor()
+    cursor.execute(f"UPDATE aprobados SET {column} = ? WHERE id = ?", (value, id))
+    connection.commit()
+    connection.close()
+
+    return "OK", 200
+
+
+
+#editar registros 
+
+@app.route("/eliminar/<int:id>", methods=["POST"])
+def eliminar_registro(id):
+    # Conectar a la base de datos y eliminar el registro con el ID especificado
+    connection = conectar_bd()
+    cursor = connection.cursor()
+    cursor.execute("DELETE FROM aprobados WHERE id = ?", (id,))
+    connection.commit()
+    connection.close()
+
+    # Redirigir a la página de registros
+    flash("Registro eliminado con éxito.", "success")
+    return redirect(url_for("ver_registros"))  # O usar `window.location.reload()` en el frontend
+
+
+
 
 
 

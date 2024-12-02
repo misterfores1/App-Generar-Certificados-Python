@@ -4,31 +4,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ver Registros</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/tablestyle.css">
+
 </head>
 <body>
     <div class="container">
         <h2 class="mt-4">Lista de Registros</h2>
-        <table class="table table-bordered mt-4">
+        <table>
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Nombre</th>
                     <th>Documento</th>
                     <th>Curso</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 {% for registro in registros %}
-                <tr>
-                    <td>{{ registro['id'] }}</td>
-                    <td>{{ registro['nombre'] }}</td>
-                    <td>{{ registro['documento'] }}</td>
-                    <td>{{ registro['curso'] }}</td>
+                <tr data-id="{{ registro.id }}">
+                    <td contenteditable="true" class="editable" data-column="nombre">{{ registro.nombre }}</td>
+                    <td contenteditable="true" class="editable" data-column="documento">{{ registro.documento }}</td>
+                    <td contenteditable="true" class="editable" data-column="curso">{{ registro.curso }}</td>
+                    <td>
+                        <button class="btn-delete" onclick="eliminarRegistro({{ registro.id }})">Eliminar</button>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+        
+        <script>
+            document.querySelectorAll('.editable').forEach(cell => {
+                cell.addEventListener('blur', function() {
+                    const column = this.getAttribute('data-column');
+                    const value = this.textContent;
+                    const id = this.closest('tr').getAttribute('data-id');
+        
+                    fetch('/actualizar', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            id: id,
+                            column: column,
+                            value: value,
+                        }),
+                    }).then(response => {
+                        if (response.ok) {
+                            alert('Registro actualizado correctamente');
+                        } else {
+                            alert('Error al actualizar el registro');
+                        }
+                    });
+                });
+            });
+        
+            function eliminarRegistro(id) {
+                fetch(`/eliminar/${id}`, {
+                    method: 'POST',
+                }).then(response => {
+                    if (response.ok) {
+                        window.location.reload();  // Recargar la página para reflejar los cambios
+                    } else {
+                        alert('Error al eliminar el registro');
+                    }
+                });
+            }
+        </script>
+        
+        
         <a href="/">Volver a la página principal</a>
     </div>
 </body>
