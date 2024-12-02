@@ -1,39 +1,94 @@
+/* Estilos generales */
 body {
     font-family: Arial, sans-serif;
+    background-color: #121212; /* Fondo oscuro */
+    color: #fff; /* Texto blanco */
     text-align: center;
     padding: 20px;
-    background-color: #f4f4f4;
 }
 
 h1 {
-    color: #333;
+    color: #f1f1f1;
 }
 
+/* Estilo del formulario */
 form {
     display: inline-block;
-    text-align: left;
-    background: #fff;
-    padding: 20px;
+    text-align: center;
+    background: #1e1e1e; /* Fondo oscuro */
+    padding: 60px;
+    margin: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-input, button {
+input {
     display: block;
     width: 100%;
     margin-bottom: 15px;
     padding: 10px;
     font-size: 16px;
-}
-
-button {
-    background: #007BFF;
+    background-color: #333; /* Fondo oscuro para los inputs */
+    border: 1px solid #444; /* Borde oscuro */
     color: #fff;
-    border: none;
     border-radius: 4px;
-    cursor: pointer;
 }
 
+/* Botón de Generar Certificado */
+button {
+    background-color: #4CAF50; /* Fondo verde */
+    color: white;
+    font-size: 16px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 50px; /* Bordes redondeados */
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    transition: all 0.3s ease;
+    width: auto;
+    margin: 10px;
+}
+
+/* Efecto al pasar el ratón (hover) */
 button:hover {
-    background: #0056b3;
+    background-color: #45a049; /* Fondo más oscuro */
+    transform: translateY(-2px); /* Efecto de elevación */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Sombra más intensa */
+}
+
+/* Estilo específico para el botón "Generar Certificado" */
+button#registrar {
+    background-color: #007BFF; /* Azul para "Generar Certificado" */
+}
+
+button#registrar:hover {
+    background-color: #0056b3; /* Fondo más oscuro al hacer hover */
+}
+
+/* Estilo del enlace "Ver Todos los Registros" */
+a.ver-registros {
+    display: inline-block;
+    text-decoration: none;
+    background-color: #FFC107; /* Fondo amarillo */
+    color: white;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 50px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    margin-top: 15px;
+}
+
+/* Efecto al pasar el ratón sobre el enlace */
+a.ver-registros:hover {
+    background-color: #ffca28; /* Fondo más suave */
+    transform: translateY(-2px); /* Efecto de elevación */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Foco del enlace */
+a.ver-registros:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(72, 144, 255, 0.5); /* Sombra al enfocar */
 }

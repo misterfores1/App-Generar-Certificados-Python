@@ -1,9 +1,10 @@
-import sqlite3
-
 from flask import Flask, render_template, request, send_file, redirect, url_for, session, flash
 from fpdf import FPDF
 from datetime import datetime
 from PIL import Image
+import sqlite3
+import csv
+import os
 
 
 
@@ -15,7 +16,7 @@ app.secret_key = "mi_clave_secreta"
 
 # Función para conectar con la base de datos
 def conectar_bd():
-    connection = sqlite3.connect("certificados.db")
+    connection = sqlite3.connect("main.db")
     connection.row_factory = sqlite3.Row  # Para usar nombres de columnas en las filas
     return connection
 
@@ -71,18 +72,14 @@ def generar_certificado():
     # Documento en tamaño pequeño
     pdf_temp.set_font("Helvetica", size=14)  # Fuente, tamaño 14
     pdf_temp.set_xy(50, 150)  # Ajusta las coordenadas donde aparecerá el texto
-    pdf_temp.cell(30, 10, f"Documento: {documento}", align="C")
+    pdf_temp.cell(110, 50, f"Documento: {documento}", align="C")
     
     # Curso en tamaño mediano
-    pdf_temp.set_font("Helvetica", size=16)  # Fuente, tamaño 16
-    pdf_temp.set_xy(50, 100)  # Ajusta las coordenadas donde aparecerá el texto
-    pdf_temp.cell(40, 10, f"Curso: {curso}", align="C")
+    pdf_temp.set_font("Helvetica", size=22)  # Fuente, tamaño 16
+    pdf_temp.set_xy(50, 130)  # Ajusta las coordenadas donde aparecerá el texto
+    pdf_temp.cell(110, 50, f"Curso: {curso}", align="C")
 
-    # Fecha en tamaño pequeño
-    pdf_temp.set_font("Helvetica", size=14)  # Fuente, tamaño 14
-    pdf_temp.set_xy(50, 100)  # Ajusta las coordenadas donde aparecerá el texto
-    pdf_temp.cell(120, 10, f"Fecha: {fecha_aprobacion}", align="C")
-
+    
     # Guardar el PDF final con la imagen como plantilla y los datos
     output_pdf = "certificado_completo.pdf"
     pdf_temp.output(output_pdf)
@@ -103,7 +100,7 @@ def login():
         password = request.form["password"]
 
         # Verificar si la contraseña es correcta
-        if password == "clave1234":  # Cambia esto por tu contraseña
+        if password == "fores1234":  # Cambia esto por tu contraseña
             session["authenticated"] = True  # Guardar sesión
             return redirect(url_for("registrar_usuario"))  # Redirigir a la página de registro
 
@@ -147,6 +144,89 @@ def registrar_usuario():
         return render_template("registro.html", mensaje=mensaje)
 
     return render_template("registro.html")
+
+
+
+if not os.path.exists('uploads'):
+    os.makedirs('uploads')
+
+# Ruta para la carga masiva
+@app.route('/carga_masiva', methods=['GET', 'POST'])
+def carga_masiva():
+    if request.method == 'POST':
+        print(request.files)  # Ver los archivos enviados por el formulario
+        
+        archivo = request.files['archivo']
+        
+        if archivo and archivo.filename.endswith('.csv'):
+            # Guardar el archivo en el directorio 'uploads'
+            archivo_path = os.path.join('uploads', archivo.filename)
+            archivo.save(archivo_path)
+            
+            # Leer el archivo CSV y agregar los registros a la base de datos
+            try:
+                with open(archivo_path, newline='', encoding='utf-8') as f:
+                    reader = csv.reader(f)
+                    next(reader)  # Si el archivo tiene encabezados, los salta
+                    for row in reader:
+                        # Verificar que la fila tenga la cantidad correcta de datos
+                        if len(row) == 4:  # Por ejemplo, supongamos que hay 4 columnas
+                            documento, nombre, curso, fecha = row
+                            # Inserción de los datos en la base de datos
+                            agregar_a_base_datos(documento, nombre, curso, fecha)
+                        else:
+                            print("Fila no válida:", row)  # Si la fila no tiene la cantidad correcta de columnas
+            except Exception as e:
+                print(f"Error al procesar el archivo: {e}")
+                return 'Hubo un error procesando el archivo', 500
+            
+            # Eliminar el archivo después de procesarlo (opcional)
+            os.remove(archivo_path)
+
+            return redirect(url_for('success'))  # Redirigir a una página de éxito
+        else:
+            return 'El archivo no es CSV', 400
+    
+    return render_template('carga_masiva.html')
+
+@app.route('/success')
+def success():
+    return '¡Carga exitosa!'
+
+# Función para insertar los datos en la base de datos
+def agregar_a_base_datos(documento, nombre, curso, fecha):
+    connection = sqlite3.connect('main.db')  # Cambiar a tu base de datos
+    cursor = connection.cursor()
+    
+    # Suponiendo que tienes una tabla llamada 'aprobados' con las columnas adecuadas
+    cursor.execute('''
+        INSERT INTO aprobados (documento, nombre, curso, fecha)
+        VALUES (?, ?, ?, ?)
+    ''', (documento, nombre, curso, fecha))
+    
+    connection.commit()
+    connection.close()
+
+
+
+
+
+
+
+@app.route("/ver_registros")
+def ver_registros():
+    # Conectar a la base de datos y obtener todos los registros
+    connection = conectar_bd()
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM aprobados")
+    registros = cursor.fetchall()
+    connection.close()
+
+    # Renderizar la plantilla con los registros
+    return render_template("ver_registros.html", registros=registros)
+
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)

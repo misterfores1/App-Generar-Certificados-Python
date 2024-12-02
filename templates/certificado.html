@@ -21,7 +21,16 @@
         <label for="documento">Número de Cédula:</label>
         <input type="text" id="documento" name="documento" placeholder="Ingresa tu número de cédula" required>
         <br>
-        <button type="submit">Generar Certificado</button>
+        <!-- Botón para generar certificado -->
+        <button type="submit" id="registrar">Generar Certificado</button>
+        <br>
+        <!-- Enlace para ver todos los registros -->
+        <a href="{{ url_for('ver_registros') }}" class="ver-registros" id="ver-registros">Ver Todos los Registros</a>
+        <a href="login" class="ver-registros" id="iniciar">Registrar</a>
+        <a href="carga_masiva" class="ver-registros" id="masiva">Carga Masiva de Registros</a>
+
     </form>
+
+
 </body>
 </html>
