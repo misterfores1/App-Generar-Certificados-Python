@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Principal - Aplicación de Certificados</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hola, Administrador</h1>
+            <p>Desde aquí puedes agregar certificados, ver registros y más.</p>
+        </header>
+
+        <!-- Opciones principales -->
+        <div class="options">
+            <h2>Acciones Disponibles</h2>
+            <ul>
+                <li><a href="{{ url_for('registrar_usuario') }}">Registrar Usuario</a></li>
+                <li><a href="{{ url_for('carga_masiva') }}">Carga Masiva de Registros</a></li>
+                <li><a href="{{ url_for('ver_registros') }}">Ver Registros</a></li>
+                <li><a href="{{ url_for('exportar_csv') }}">Exportar CSV</a></li>
+            </ul>
+        </div>
+        
+    </div>
+    <a href="/" >Volver a la página principal</a>
+</body>
+</html>

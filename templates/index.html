@@ -1,0 +1,23 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Inicio</title>
+</head>
+<body>
+    <h1>Bienvenido</h1>
+    <form action="/verificar_documento" method="POST">
+        <label for="documento">Ingresa tu documento:</label>
+        <input type="text" id="documento" name="documento" required>
+        <button type="submit">Verificar</button>
+    </form>
+
+    <center><a href="{{ url_for('menu') }}" class="administrador" id="ver-registros">Administrador</a></center>
+
+
+    
+</body>
+</html>

@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ver Registros</title>
     <link rel="stylesheet" href="/static/tablestyle.css">
-
 </head>
 <body>
     <div class="container">
@@ -16,6 +15,7 @@
                     <th>Nombre</th>
                     <th>Documento</th>
                     <th>Curso</th>
+                    <th>¿Certificado Descargado?</th> <!-- Nueva columna -->
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -25,6 +25,14 @@
                     <td contenteditable="true" class="editable" data-column="nombre">{{ registro.nombre }}</td>
                     <td contenteditable="true" class="editable" data-column="documento">{{ registro.documento }}</td>
                     <td contenteditable="true" class="editable" data-column="curso">{{ registro.curso }}</td>
+                    <!-- Mostrar "Sí" si descargado es 1, "No" si es 0 -->
+                    <td>
+                        {% if registro.descargado == 1 %}
+                            Sí
+                        {% else %}
+                            No
+                        {% endif %}
+                    </td>
                     <td>
                         <button class="btn-delete" onclick="eliminarRegistro({{ registro.id }})">Eliminar</button>
                     </td>
@@ -32,7 +40,27 @@
                 {% endfor %}
             </tbody>
         </table>
-        
+
+        <!-- Controles de paginación -->
+        <div class="pagination">
+            {% if pagina > 1 %}
+                <a href="{{ url_for('ver_registros', pagina=pagina-1) }}" class="btn">Anterior</a>
+            {% endif %}
+            <span>Página {{ pagina }} de {{ total_paginas }}</span>
+            {% if pagina < total_paginas %}
+                <a href="{{ url_for('ver_registros', pagina=pagina+1) }}" class="btn">Siguiente</a>
+            {% endif %}
+        </div>
+
+        <form method="GET" action="{{ url_for('ver_registros') }}">
+            <input type="text" name="search" placeholder="Buscar por nombre o documento">
+            <button type="submit">Buscar</button>
+        </form>
+
+        <form action="{{ url_for('exportar_csv') }}" method="POST">
+            <button type="submit">Exportar a CSV</button>
+        </form>
+
         <script>
             document.querySelectorAll('.editable').forEach(cell => {
                 cell.addEventListener('blur', function() {
@@ -72,8 +100,7 @@
                 });
             }
         </script>
-        
-        
+
         <a href="/">Volver a la página principal</a>
     </div>
 </body>

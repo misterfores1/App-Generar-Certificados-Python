@@ -1,4 +1,3 @@
-<!-- templates/carga_masiva.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,13 +9,114 @@
 <body>
     <h1>Carga Masiva de Registros</h1>
 
+    <!-- Botón para descargar archivo de ejemplo -->
+    <div style="margin-bottom: 20px;">
+        <a href="/descargar_ejemplo" class="btn btn-info">Descargar Archivo de Ejemplo</a>
+    </div>
+
+    <!-- Formulario para cargar archivo -->
     <form action="/carga_masiva" method="POST" enctype="multipart/form-data">
-        <label for="archivo">Selecciona un archivo:</label>
+        <label for="archivo">Selecciona un archivo CSV:</label>
         <input type="file" id="archivo" name="archivo" required>
-        <button type="submit">Cargar</button>
-        <a href="/"   class="ver-registros">Volver a la página principal</a>
+        
+        <div style="margin-top: 10px;">
+            <button type="submit" name="vista_previa" class="btn btn-warning">Vista Previa</button>
+            <button type="submit" name="cargar" class="btn btn-success">Cargar</button>
+            <a href="/" class="ver-registros">Volver a la página principal</a>
+        </div>
     </form>
 
-   
+    <!-- Barra de progreso -->
+    <div id="progress-container" style="display:none; width: 100%; margin-top: 20px;">
+        <div id="progress-bar" style="width: 0%; height: 30px; background-color: green; text-align: center; color: white;">0%</div>
+    </div>
+
+
+    <!-- Script para la barra de progreso -->
+    <script>
+        const form = document.querySelector("form");
+        const progressBar = document.getElementById("progress-bar");
+        const progressContainer = document.getElementById("progress-container");
+
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();  // Prevenir el envío inmediato del formulario
+
+            const formData = new FormData(form);
+            progressContainer.style.display = "block";  // Mostrar la barra de progreso
+
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "/carga_masiva", true);
+            
+            // Actualizar la barra de progreso durante el envío
+            xhr.upload.onprogress = function (e) {
+                if (e.lengthComputable) {
+                    const percent = (e.loaded / e.total) * 100;
+                    progressBar.style.width = percent + "%";
+                    progressBar.textContent = Math.round(percent) + "%";
+                }
+            };
+
+            // Enviar el formulario con AJAX
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Redirigir si la carga fue exitosa
+                    window.location.href = "/ver_registros";
+                } else {
+                    alert("Hubo un error al cargar el archivo.");
+                }
+            };
+
+            xhr.send(formData);
+        });
+    </script>
+
+
+    <!-- Mensajes de éxito, error o advertencia -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="alerts">
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Mensajes de registros duplicados -->
+    {% if duplicados %}
+      <div class="alert alert-warning">
+        <strong>Registros duplicados encontrados:</strong>
+        <ul>
+          {% for registro in duplicados %}
+            <li>{{ registro[0] }} - {{ registro[1] }} - {{ registro[2] }} - {{ registro[3] }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    <!-- Vista previa de los registros -->
+    {% if preview_data %}
+    <h2>Vista Previa de Registros</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                {% for header in headers %}
+                <th>{{ header }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in preview_data %}
+            <tr>
+                {% for value in row %}
+                <td>{{ value }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
 </body>
 </html>

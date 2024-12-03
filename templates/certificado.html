@@ -16,7 +16,7 @@
     </script>
 </head>
 <body>
-    <h1>Generar tu Certificado</h1>
+    <h1>DESCARGA TU CERTIFICADO</h1>
     <form action="/generar" method="post" onsubmit="validarFormulario(event)">
         <label for="documento">Número de Cédula:</label>
         <input type="text" id="documento" name="documento" placeholder="Ingresa tu número de cédula" required>
@@ -28,6 +28,10 @@
         <a href="{{ url_for('ver_registros') }}" class="ver-registros" id="ver-registros">Ver Todos los Registros</a>
         <a href="registrar" class="ver-registros" id="iniciar">Registrar</a>
         <a href="carga_masiva" class="ver-registros" id="masiva">Carga Masiva de Registros</a>
+        
+       
+
+
 
     </form>
 

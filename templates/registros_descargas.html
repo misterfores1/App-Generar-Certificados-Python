@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Descargas</title>
+    <link rel="stylesheet" href="/static/tablestyle.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Registro de Descargas de Certificados</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Documento</th>
+                    <th>Curso</th>
+                    <th>Fecha de Culminación</th> <!-- Aquí está la columna fecha -->
+                    <th>Fecha de Descarga</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for descarga in descargas %}
+                <tr>
+                    <td>{{ descarga.id }}</td>
+                    <td>{{ descarga.nombre }}</td>
+                    <td>{{ descarga.documento }}</td>
+                    <td>{{ descarga.curso }}</td>
+                    <td>{{ descarga.fecha }}</td>  <!-- Mostrar la fecha de culminación -->
+                    <td>{{ descarga.fecha_descarga }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="/">Volver a la página principal</a>
+    </div>
+</body>
+</html>

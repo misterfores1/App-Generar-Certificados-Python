@@ -9,6 +9,43 @@ body {
 
 h1 {
     color: #f1f1f1;
+    font-size: 2rem;
+}
+
+/* Estilo de la lista de enlaces */
+ul {
+    list-style-type: none; /* Elimina los puntos de la lista */
+    padding: 0;
+    margin: 20px 0;
+}
+
+ul li {
+    margin: 15px 0; /* Espacio entre los enlaces */
+}
+
+ul li a {
+    display: block; /* Para que ocupe toda la línea */
+    text-decoration: none; /* Elimina el subrayado */
+    background-color: #333; /* Fondo oscuro */
+    color: #fff; /* Texto blanco */
+    padding: 12px 20px; /* Espaciado dentro de los enlaces */
+    font-size: 18px; /* Tamaño de fuente */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sombra suave */
+    transition: all 0.3s ease; /* Transición suave para efectos hover */
+}
+
+/* Efecto de hover */
+ul li a:hover {
+    background-color: #4CAF50; /* Cambia a verde cuando se pasa el ratón */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Sombra más intensa */
+    transform: translateY(-3px); /* Efecto de elevación */
+}
+
+/* Efecto de foco para accesibilidad */
+ul li a:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(240, 72, 255, 0.5); /* Sombra morada al hacer foco */
 }
 
 /* Estilo del formulario */
@@ -24,6 +61,17 @@ form {
 
 input {
     display: block;
+    margin-bottom: 15px;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #333; /* Fondo oscuro para los inputs */
+    border: 1px solid #444; /* Borde oscuro */
+    color: #fff;
+    border-radius: 4px;
+}
+
+.inputlogin {
+    display: block;
     width: 100%;
     margin-bottom: 15px;
     padding: 10px;
@@ -34,7 +82,9 @@ input {
     border-radius: 4px;
 }
 
-/* Botón de Generar Certificado */
+
+
+/* Estilo del botón */
 button {
     background-color: #4CAF50; /* Fondo verde */
     color: white;
@@ -70,7 +120,7 @@ button#registrar:hover {
 a.ver-registros {
     display: inline-block;
     text-decoration: none;
-    background-color: #FFC107; /* Fondo amarillo */
+    background-color: #9807ff; /* Fondo amarillo */
     color: white;
     padding: 12px 24px;
     font-size: 16px;
@@ -82,7 +132,7 @@ a.ver-registros {
 
 /* Efecto al pasar el ratón sobre el enlace */
 a.ver-registros:hover {
-    background-color: #ffca28; /* Fondo más suave */
+    background-color: #bf28ff; /* Fondo más suave */
     transform: translateY(-2px); /* Efecto de elevación */
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
@@ -90,5 +140,142 @@ a.ver-registros:hover {
 /* Foco del enlace */
 a.ver-registros:focus {
     outline: none;
-    box-shadow: 0 0 0 2px rgba(72, 144, 255, 0.5); /* Sombra al enfocar */
+    box-shadow: 0 0 0 2px rgba(240, 72, 255, 0.5); /* Sombra al enfocar */
+}
+
+/* Estilo del enlace "Administrador" */
+a.administrador {
+    display: inline-block;
+    text-decoration: none;
+    background-color: #818181; /* Fondo gris */
+    color: white;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 50px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    margin-top: 15px;
+}
+
+/* Efecto al pasar el ratón sobre el enlace */
+a.administrador:hover {
+    background-color: #282828; /* Fondo más suave */
+    transform: translateY(-2px); /* Efecto de elevación */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Foco del enlace */
+a.administrador:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(90, 88, 90, 0.5); /* Sombra al enfocar */
+}
+
+/* Alertas */
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.alert-warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+/* Estilos específicos para la página principal */
+
+/* Contenedor principal */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Estilo del encabezado */
+header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    color: #f1f1f1;
+}
+
+header p {
+    font-size: 1.2rem;
+    color: #ccc;
+    margin-top: 10px;
+}
+
+/* Estilo de las opciones */
+.options {
+    background: #1e1e1e; /* Fondo oscuro */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Sombra más prominente */
+    margin-top: 20px;
+}
+
+.options h2 {
+    font-size: 2rem;
+    color: #f1f1f1;
+    margin-bottom: 20px;
+}
+
+/* Estilo de la lista de enlaces */
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul li {
+    margin: 15px 0; /* Espacio entre los enlaces */
+}
+
+ul li a {
+    display: inline-block;
+    text-decoration: none;
+    background-color: #333; /* Fondo oscuro */
+    color: #fff; /* Texto blanco */
+    padding: 12px 0px;
+    font-size: 18px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sombra suave */
+    transition: all 0.3s ease; /* Transición suave */
+    width: 100%; /* Hace los enlaces ocupen toda la línea */
+}
+
+/* Efecto al pasar el ratón sobre los enlaces */
+ul li a:hover {
+    background-color: #4CAF50; /* Fondo verde */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transform: translateY(-3px); /* Efecto de elevación */
+}
+
+/* Efecto de foco en enlaces */
+ul li a:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(240, 72, 255, 0.5); /* Sombra morada al hacer foco */
+}
+
+/* Estilo del enlace "Volver a la página principal" */
+a {
+    color: #4CAF50; /* Verde */
+    font-size: 16px;
+    text-decoration: none;
+    margin-top: 20px;
+    display: inline-block;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #45a049; /* Verde más oscuro */
 }
